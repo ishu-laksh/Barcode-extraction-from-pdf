@@ -1,0 +1,26 @@
+This code processes each page of a PDF by converting it into images, detecting barcodes on each page, and printing the barcode data along with its coordinates. Here's a summary of what the code does:
+
+PDF to Image Conversion:
+
+The PDF is converted into images using pdf2image, where each page is treated as a separate image.
+Image Processing:
+
+For each image, the code converts it from RGB to grayscale using OpenCV's cvtColor function.
+Barcode Detection:
+
+The grayscale image is processed using the pyzbar library to detect any barcodes on the page.
+Barcode Data Extraction:
+
+If barcodes are detected, the barcode data is decoded into a human-readable format (usually a string).
+Barcode Coordinates:
+
+For each barcode, its polygon coordinates (corner points) are extracted and printed. These coordinates represent the bounding box around the detected barcode.
+Output:
+
+For each page, if barcodes are found, the barcode data and coordinates are printed. If no barcodes are found, a message is printed indicating that no barcodes were detected on that page.
+The output includes the following details for each page:
+
+Page number.
+Barcode data (the information stored in the barcode).
+Coordinates of the barcode on the page, represented as polygon points.
+If no barcodes are found on a page, it will simply output that no barcodes were detected.

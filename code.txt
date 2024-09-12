@@ -1,0 +1,36 @@
+!pip install pdf2image opencv-python opencv-python-headless Pillow
+!apt-get install -y poppler-utils
+!pip install pyzbar
+!apt-get install -y libzbar0
+
+from pyzbar.pyzbar import decode
+import cv2
+import numpy as np
+from pdf2image import convert_from_path
+
+# Convert PDF to images
+pages = convert_from_path('path_to_file')
+
+# Loop through each page image
+for i, page_image in enumerate(pages):
+    # Convert PIL image to NumPy array for OpenCV
+    image_np = np.array(page_image)
+    
+    # Convert the image to grayscale
+    gray = cv2.cvtColor(image_np, cv2.COLOR_RGB2GRAY)
+    
+    # Detect barcodes
+    barcodes = decode(gray)
+    
+    if barcodes:
+        print(f"Page {i+1}:")
+        for barcode in barcodes:
+            # Extract barcode data
+            barcode_data = barcode.data.decode("utf-8")
+            print(f"Barcode Data: {barcode_data}")
+            
+            # Extract barcode coordinates (polygon points)
+            barcode_polygon = barcode.polygon
+            print(f"Coordinates: {[(point.x, point.y) for point in barcode_polygon]}")
+    else:
+        print(f"No barcodes found on page {i+1}")
